@@ -13,7 +13,7 @@ const actorSchema = new mongoose_1.Schema({
     },
     name: {
         type: String,
-        required: true,
+        required: 'Kindly enter the actor name',
     },
     password: {
         type: String,
@@ -21,11 +21,11 @@ const actorSchema = new mongoose_1.Schema({
     },
     surname: {
         type: String,
-        require: true,
+        require: 'Kindly enter the actor surname',
     },
     email: {
         type: String,
-        required: true,
+        required: 'Kindly enter the actor email',
     },
     phone_number: {
         type: Number,

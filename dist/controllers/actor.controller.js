@@ -69,6 +69,9 @@ exports.getActor = getActor;
 //update actor
 const updateActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    if (!req.body) {
+        return res.status(422).send("Invalid values");
+    }
     try {
         const { role, name, surname, email, phone_number, address, isActivated } = req.body;
         const actor = yield actor_1.default.findOneAndUpdate({ _id: id }, {

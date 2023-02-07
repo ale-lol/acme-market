@@ -9,7 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 require("./routes/actor.routes");
 const actor_routes_1 = __importDefault(require("./routes/actor.routes"));
 const trip_routes_1 = __importDefault(require("./routes/trip.routes"));
-const trip_application_routes_1 = __importDefault(require("./routes/trip_application.routes"));
+const application_routes_1 = __importDefault(require("./routes/application.routes"));
 //initializations
 const app = (0, express_1.default)();
 //settings
@@ -25,5 +25,5 @@ app.get('/', (_req, res) => {
 });
 app.use(actor_routes_1.default);
 app.use(trip_routes_1.default);
-app.use(trip_application_routes_1.default);
+app.use(application_routes_1.default);
 exports.default = app;

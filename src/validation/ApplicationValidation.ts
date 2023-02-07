@@ -1,11 +1,6 @@
 import { check } from "express-validator";
 
 const creationValidator = [
-  check("create_date")
-    .exists({ checkNull: true, checkFalsy: true })
-    .isDate()
-    .trim()
-    .escape(),
   check("status")
     .exists({ checkNull: true, checkFalsy: true })
     .isString()

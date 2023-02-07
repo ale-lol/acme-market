@@ -4,7 +4,7 @@ import cors from 'cors'
 import './routes/actor.routes'
 import actorRouter from './routes/actor.routes';
 import tripRouter from './routes/trip.routes';
-import applicationRouter from './routes/trip_application.routes'
+import applicationRouter from './routes/application.routes'
 
 //initializations
 const app = express();

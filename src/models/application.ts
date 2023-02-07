@@ -17,6 +17,7 @@ const tripApplicationSchema = new Schema({
     status: {
         type: String,
         default: 'PENDING',
+        require: "Kindly enter the application status",
         enum: ['PENDING', 'REJECTED', 'CANCELLED', 'ACCEPTED', 'DUE']
     },
     comments: {
@@ -37,4 +38,5 @@ const tripApplicationSchema = new Schema({
     }
 })
 
-export default model<interTripApplication>('Trip_Application', tripApplicationSchema)
+
+export default model<interTripApplication>('Application', tripApplicationSchema)

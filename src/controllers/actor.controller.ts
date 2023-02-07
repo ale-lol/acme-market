@@ -54,6 +54,9 @@ export const getActor = async (req: Request, res: Response) => {
 //update actor
 export const updateActor = async (req: Request, res: Response) => {
   const id = req.params.id;
+  if(!req.body){
+    return res.status(422).send("Invalid values")
+  }
   try {
     const { role, name, surname, email, phone_number, address, isActivated } =
       req.body;
