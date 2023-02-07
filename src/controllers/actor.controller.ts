@@ -7,38 +7,70 @@ export const addActor = async (req: Request, res: Response) => {
     !req.body.name ||
     !req.body.surname ||
     !req.body.email ||
-    !req.body.actor_type
+    !req.body.role ||
+    !req.body.password
   ) {
     return res.status(400).json({ msg: "Please send a valid actor" });
   }
-
   const newActor = new Actor(req.body);
-  await newActor.save();
-  return res.status(201).json(newActor);
+  try {
+    const actor = await newActor.save();
+    res.json(actor);
+  } catch (err: any) {
+    if (err.name === "ValidationError") {
+      res.status(422).send(err);
+    } else {
+      res.status(500).send(err);
+    }
+  }
 };
 
 //get all actors
 export const getAllActors = async (req: Request, res: Response) => {
-  const actorsList = await Actor.find();
-  return res.send(actorsList);
+  try {
+    const actors = await Actor.find();
+    res.json(actors);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };
 
 //get actor by id
 export const getActor = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const actorFound = await Actor.findById(id).exec();
-  return res.send(actorFound);
+  try {
+    const id = req.params.id;
+    const actorFound = await Actor.findById(id).exec();
+    if (actorFound) {
+      res.status(200).json(actorFound);
+    } else {
+      res.status(404).send({ msg: "Actor not found" });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };
 
 //update actor
 export const updateActor = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { actor_type, name, surname, email, phone_number, address } = req.body;
-  const newActor = await Actor.updateOne(
-    { _id: id },
-    { $set: { actor_type, name, surname, email, phone_number, address } }
-  );
-  return res.send(newActor);
+  try{
+    const { role, name, surname, email, phone_number, address } = req.body;
+    const actor = await Actor.findOneAndUpdate(
+      { _id: id },
+      { $set: { role, name, surname, email, phone_number, address } },
+      { new: true }
+    );
+    if(actor){
+      res.status(200).json(actor)
+    }else{
+      res.status(404).send("Actor not found")
+    }
+  }catch(err: any){
+    if(err.name == "ValidationError"){
+      res.status(422).send(err)
+    }
+    res.status(500).send(err)
+  }
 };
 
 //remove actor

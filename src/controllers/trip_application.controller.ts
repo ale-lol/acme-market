@@ -27,8 +27,8 @@ export const getApplicationById = async (req: Request, res: Response) => {
 //update application
 export const updateApplication = async (req: Request, res: Response) => {
     const {id} = req.params
-    const { moment, status, comments, denied, reason } = req.body
-    const newApplication = await Trip_Application.updateOne({_id: id}, { moment, status, comments, denied, reason})
+    const { create_date, status, comments, denied, reason } = req.body
+    const newApplication = await Trip_Application.updateOne({_id: id}, { create_date, status, comments, denied, reason})
     return res.send(newApplication)
 }
 //remove application by id

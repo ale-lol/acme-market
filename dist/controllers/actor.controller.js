@@ -19,7 +19,8 @@ const addActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.name ||
         !req.body.surname ||
         !req.body.email ||
-        !req.body.actor_type) {
+        !req.body.type ||
+        !req.body.password) {
         return res.status(400).json({ msg: "Please send a valid actor" });
     }
     const newActor = new actor_1.default(req.body);
@@ -44,7 +45,7 @@ exports.getActor = getActor;
 const updateActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { actor_type, name, surname, email, phone_number, address } = req.body;
-    const newActor = yield actor_1.default.updateOne({ _id: id }, { $set: { actor_type, name, surname, email, phone_number, address } });
+    const newActor = yield actor_1.default.findOneAndUpdate({ _id: id }, { $set: { actor_type, name, surname, email, phone_number, address } });
     return res.send(newActor);
 });
 exports.updateActor = updateActor;

@@ -1,11 +1,12 @@
 import {model, Schema} from "mongoose";
 
 export interface interTripApplication {
-    moment: Date
+    create_date: Date
     status: string
     comments: string
     denied: boolean
     reason: string
+    isPaid: boolean
 }
 
 const tripApplicationSchema = new Schema({
@@ -29,6 +30,10 @@ const tripApplicationSchema = new Schema({
     reason:{
         type: String,
         required: false
+    },
+    isPaid:{
+        type: Boolean,
+        require: false
     }
 })
 
