@@ -18,12 +18,11 @@ const creationValidator = [
     .trim()
     .escape(),
   check("password")
-    .exists({ checkNull: true, checkFalsy: true })
     .isString()
     .isStrongPassword({ minLength: 5 }),
   check("phone_number")
     .optional()
-    .isString()
+    .isNumeric()
     .trim()
     .escape(),
   check("address")

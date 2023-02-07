@@ -1,12 +1,38 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const actor_controller_1 = require("../controllers/actor.controller");
+const ActorValidations_1 = require("../validation/ActorValidations");
+const ValidationMiddleware_1 = __importDefault(require("../middlewares/ValidationMiddleware"));
 const router = (0, express_1.Router)();
 //actor
-router.post('/v1/actor', actor_controller_1.addActor);
-router.get('/v1/actor', actor_controller_1.getAllActors);
-router.get('/v1/actor/:id', actor_controller_1.getActor);
-router.put('/v1/actor/:id', actor_controller_1.updateActor);
-router.delete('/v1/actor/:id', actor_controller_1.deleteActor);
+/**
+ *
+ * Post an actor
+ *    RequiredRoles: None
+ *
+ * @section actors
+ * @type post
+ * @url /v1/actors
+ * @param {string} role (EXPLORER| MANAGER| ADMINISTRATOR| SPONSOR)
+ */
+router.post("/v1/actors", ActorValidations_1.creationValidator, ValidationMiddleware_1.default, actor_controller_1.addActor);
+/**
+ *
+ * Post an actor
+ *    RequiredRoles: administrator
+ *
+ * @section actors
+ * @type get
+ * @url /v1/actors
+ * @param {string} role (EXPLORER| MANAGER| ADMINISTRATOR| SPONSOR)
+ */
+router.get("/v1/actors", actor_controller_1.getAllActors);
+router.get("/v1/actors/:id", actor_controller_1.getActor);
+router.put("/v1/actors/:id", actor_controller_1.updateActor);
+router.delete("/v1/actors/:id", actor_controller_1.deleteActor);
+router.patch("/v1/actors/:id/activated", actor_controller_1.deleteActor);
 exports.default = router;

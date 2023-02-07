@@ -1,7 +1,7 @@
-import { model, Schema, Document } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 
-export interface interActor extends Document{
+export interface interActor{
     role: string;
     name: string;
     password: string;
@@ -9,16 +9,17 @@ export interface interActor extends Document{
     email: string;
     phone_number: string;
     address: string;
+    isActivated: boolean;
 }
 
 const actorSchema = new Schema({
   role: {
     type: String,
     required: 'Kindly enter the actor role(s)',
-    enum: ['EXPLORER', 'MANAGER', 'ADMINISTRATOR, SPONSOR']
+    enum: ['EXPLORER', 'MANAGER', 'ADMINISTRATOR', 'SPONSOR']
   },
   name: {
-    type: String,
+    type: String, 
     required: true,
   },
   password: {
@@ -36,10 +37,14 @@ const actorSchema = new Schema({
   phone_number: {
     type: Number,
     require: false,
-  },
+  },  
   address:{
     type: String,
     require: false
+  },
+  isActivated:{
+    type: Boolean,
+    require:false
   }
 });
 

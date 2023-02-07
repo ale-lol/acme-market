@@ -22,6 +22,10 @@ const tripApplicationSchema = new mongoose_1.Schema({
     reason: {
         type: String,
         required: false
+    },
+    isPaid: {
+        type: Boolean,
+        require: false
     }
 });
 exports.default = (0, mongoose_1.model)('Trip_Application', tripApplicationSchema);

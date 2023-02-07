@@ -40,8 +40,8 @@ exports.getApplicationById = getApplicationById;
 //update application
 const updateApplication = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { moment, status, comments, denied, reason } = req.body;
-    const newApplication = yield trip_application_1.default.updateOne({ _id: id }, { moment, status, comments, denied, reason });
+    const { create_date, status, comments, denied, reason } = req.body;
+    const newApplication = yield trip_application_1.default.updateOne({ _id: id }, { create_date, status, comments, denied, reason });
     return res.send(newApplication);
 });
 exports.updateApplication = updateApplication;

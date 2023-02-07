@@ -6,10 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const actorSchema = new mongoose_1.Schema({
-    type: {
+    role: {
         type: String,
         required: 'Kindly enter the actor role(s)',
-        enum: ['EXPLORER', 'MANAGER', 'ADMINISTRATOR']
+        enum: ['EXPLORER', 'MANAGER', 'ADMINISTRATOR', 'SPONSOR']
     },
     name: {
         type: String,
@@ -33,6 +33,10 @@ const actorSchema = new mongoose_1.Schema({
     },
     address: {
         type: String,
+        require: false
+    },
+    isActivated: {
+        type: Boolean,
         require: false
     }
 });

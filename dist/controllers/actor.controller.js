@@ -19,40 +19,100 @@ const addActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.name ||
         !req.body.surname ||
         !req.body.email ||
-        !req.body.type ||
+        !req.body.role ||
         !req.body.password) {
         return res.status(400).json({ msg: "Please send a valid actor" });
     }
     const newActor = new actor_1.default(req.body);
-    yield newActor.save();
-    return res.status(201).json(newActor);
+    try {
+        const actor = yield newActor.save();
+        res.json(actor);
+    }
+    catch (err) {
+        if (err.name === "ValidationError") {
+            res.status(422).send(err);
+        }
+        else {
+            res.status(500).send(err);
+        }
+    }
 });
 exports.addActor = addActor;
 //get all actors
 const getAllActors = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const actorsList = yield actor_1.default.find();
-    return res.send(actorsList);
+    try {
+        const actors = yield actor_1.default.find();
+        res.json(actors);
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
 });
 exports.getAllActors = getAllActors;
 //get actor by id
 const getActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    const actorFound = yield actor_1.default.findById(id).exec();
-    return res.send(actorFound);
+    try {
+        const id = req.params.id;
+        const actorFound = yield actor_1.default.findById(id).exec();
+        if (actorFound) {
+            res.status(200).json(actorFound);
+        }
+        else {
+            res.status(404).send({ msg: "Actor not found" });
+        }
+    }
+    catch (err) {
+        res.status(500).send(err);
+    }
 });
 exports.getActor = getActor;
 //update actor
 const updateActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { actor_type, name, surname, email, phone_number, address } = req.body;
-    const newActor = yield actor_1.default.findOneAndUpdate({ _id: id }, { $set: { actor_type, name, surname, email, phone_number, address } });
-    return res.send(newActor);
+    try {
+        const { role, name, surname, email, phone_number, address, isActivated } = req.body;
+        const actor = yield actor_1.default.findOneAndUpdate({ _id: id }, {
+            $set: {
+                role,
+                name,
+                surname,
+                email,
+                phone_number,
+                address,
+                isActivated,
+            },
+        }, { new: true });
+        if (actor) {
+            res.status(200).json(actor);
+        }
+        else {
+            res.status(404).send("Actor not found");
+        }
+    }
+    catch (err) {
+        if (err.name == "ValidationError") {
+            res.status(422).send(err);
+        }
+        res.status(500).send(err);
+    }
 });
 exports.updateActor = updateActor;
 //remove actor
 const deleteActor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield actor_1.default.findByIdAndDelete(id);
-    return res.send(result);
+    try {
+        const result = yield actor_1.default.findByIdAndDelete(id);
+        if (result === null) {
+            return res.status(404).send("Actor not found");
+        }
+        else {
+            return res.send(result);
+            //return res.json({ msg: "Actor succesfully deleted" });
+        }
+    }
+    catch (err) {
+        return res.status(500).send(err).json();
+    }
 });
 exports.deleteActor = deleteActor;
+//activate or desactivate
