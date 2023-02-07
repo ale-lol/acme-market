@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-
+import Stage,{interStage} from './stage'
 export interface interTrip {
   ticker: string;
   title: string;
@@ -9,14 +9,10 @@ export interface interTrip {
   start_date: String;
   end_date: string;
   pictures: string[];
+  published: boolean
   cancelled: boolean;
   reason: string;
-}
-
-export interface Stage {
-    title: string
-    description: string
-    price:number
+  stages: interStage[]
 }
 
 const tripSchema = new Schema({
@@ -32,10 +28,6 @@ const tripSchema = new Schema({
     type: String,
     require: true,
   },
-  stages:{
-    type: Object,
-    required: true
-  },
   price: {
     type: Number,
     require: true,
@@ -45,15 +37,19 @@ const tripSchema = new Schema({
     require: true,
   },
   start_date: {
-    type: String,
+    type: Date,
     require: true,
   },
   end_date: {
-    type: String,
+    type: Date,
     require: true,
   },
   pictures: {
     type: Array,
+    require: false,
+  },
+  published: {
+    type: Boolean,
     require: false,
   },
   cancelled: {
@@ -64,6 +60,9 @@ const tripSchema = new Schema({
     type: String,
     required: false,
   },
+  stages: {
+    type: Array<interStage>
+  }
 });
 
 tripSchema.pre<interTrip>('save', function (next) {
@@ -75,4 +74,17 @@ tripSchema.pre<interTrip>('save', function (next) {
   this.ticker = `${this.start_date}-${random}`
   next()
 });
+
+tripSchema.pre<interTrip>('save', function (next) {
+  let total_price = 0
+  this.stages.map((stage: interStage)=>{
+      total_price +=stage.price
+  })
+  if(total_price == 0){
+    this.price = 0
+    next()
+  }else this.price = total_price
+  next()
+});
+
 export default model<interTrip>("Trip", tripSchema);
